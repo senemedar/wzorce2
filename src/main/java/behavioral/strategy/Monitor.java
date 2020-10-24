@@ -3,7 +3,7 @@ package behavioral.strategy;
 import java.util.Random;
 
 public class Monitor {
-
+    private RenderStrategy renderStrategy = new RenderScreenStrategy();
     private int secondsWithoutInput = 0;
     private final int secondsToScreenSaver; //po ilu sekundach uruchomić wygaszacz
     private final int secondsToShutdown; //po ilu sekundach wyłączyć ekran
@@ -26,7 +26,7 @@ public class Monitor {
     }
 
     private void renderScreen() {
-        //TODO metodę należy dokończyć
+        renderStrategy.render();
     }
 
     private boolean hasUserInteracted() {
@@ -34,7 +34,14 @@ public class Monitor {
     }
 
     private void updateRenderStrategy() {
-      //TODO metodę należy dokończyć
+        if (secondsWithoutInput > secondsToScreenSaver && secondsWithoutInput < secondsToShutdown) {
+            renderStrategy = new RenderScreenSaverStrategy();
+        } else if (secondsWithoutInput >= secondsToShutdown) {
+            renderStrategy = new RenderNothingStrategy();
+        } else {
+            renderStrategy = new RenderScreenStrategy();
+        }
+    
     }
 
 
